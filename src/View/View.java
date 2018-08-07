@@ -16,29 +16,30 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.Controller;
-import Inventario.Proveedores;
 import Inventrio.Bd;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuBar;
+import java.awt.Color;
 
 public class View extends JFrame {
 
 	private JPanel contentPane;
-	//DEFINICIÓN DE LAS ETIQUETAS
+	
     private JLabel lblNombre;
     private JLabel lblExistencia;
     private JLabel lblPrecio;
+    public JLabel lblError;
  
-    //DEFINICIÓN DE LOS CUADROS DE TEXTO
+    
     public JTextField txtNombre;
     public JTextField txtExistencia;
     public JTextField txtPrecio;
-    public JComboBox<Proveedores> cmbProveedores;
+    public JComboBox<String> cmbProveedores;
  
-    //DEFINICIÓN DE LOS BOTONES
+   
     public JButton btnAdd;
     public JButton btnDel;
     public JButton btnUpd;
@@ -46,49 +47,57 @@ public class View extends JFrame {
     private JLabel lblNombreProveedor;
     private JLabel lblDireccion;
  
-    //DEFINICIÓN DE LOS CUADROS DE TEXTO
+   
     public JTextField txtNombreProveedor;
     public JTextField txtDireccion;
  
-    //DEFINICIÓN DE LOS BOTONESs
+    private JLabel lblNombreUsuario;
+    private JLabel lblContrasena;
+    private JLabel lblPermisos;
+ 
+   
+    public JTextField txtNombreUsuario;
+    public JTextField txtContrasena;
+    public JComboBox<String> cmbPermisos;
     
     public JButton btnAddProveedor;
     public JButton btnDelProveedor;
     public JButton btnUpdProveedor;
- 
-    //DEFINICIÓN DE LOS OBJETOS PARA LA TABLA
-    public JScrollPane scroll; //Panel de scroll que contiene la tabla
-    public Object[][] datos; //Cuerpo de la tabla
-    public String[] cabecera;    //Cabecera de la tabla
-    public DefaultTableModel dtm;//Unión de la cabecera y la tabla
-    public JTable tabla; //Tabla propiamente dicha
     
-    public JScrollPane scrollProveedor; //Panel de scroll que contiene la tabla
-    public Object[][] datosProveedor; //Cuerpo de la tabla
-    public String[] cabeceraProveedor;    //Cabecera de la tabla
-    public DefaultTableModel dtmProveedor;//Unión de la cabecera y la tabla
-    public JTable tablaProveedor; //Tabla propiamente dicha
+    public JButton btnAddUsuario;
+    public JButton btnDelUsuario;
+    public JButton btnUpdUsuario;
+ 
+   
+    public JScrollPane scroll; 
+    public Object[][] datos; 
+    public String[] cabecera;  
+    public DefaultTableModel dtm;
+    public JTable tabla;
+    
+    public JScrollPane scrollProveedor; 
+    public Object[][] datosProveedor; 
+    public String[] cabeceraProveedor;
+    public DefaultTableModel dtmProveedor;
+    public JTable tablaProveedor; 
+    
+    public JScrollPane scrollUsuario; 
+    public Object[][] datosUsuario; 
+    public String[] cabeceraUsuario;
+    public DefaultTableModel dtmUsuario;
+    public JTable tablaUsuario; 
     
     public JPanel panel1 = new JPanel();
     public JPanel panel2 = new JPanel();
+    public JPanel panel3 = new JPanel();
+    private JLabel lblApellido;
+    public JTextField txtApellido;
+    boolean isVisble = false;
+    public JTabbedPane panelDePestanas;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		 try {
-		     // creando el frame y lo muestra
-		    View frame = new View();
-		 	new Bd("Inventario");
-			
-			Controller controlador = new Controller(frame);
-			
-			frame.conectaControlador(controlador);
-			controlador.llenarComboBox();
-		    frame.setVisible(true);
-		    } catch (Exception e) {
-		     e.printStackTrace();
-		    }
-	}
+	
 
 	
 	public View() {
@@ -107,12 +116,11 @@ public class View extends JFrame {
 		  contentPane.setLayout(null);
 		  
 		
-		  JTabbedPane panelDePestanas = new JTabbedPane(JTabbedPane.TOP);
+		  panelDePestanas = new JTabbedPane(JTabbedPane.TOP);
 		  
 		  panelDePestanas.setBounds(10, 11, 1035, 546);
 		  contentPane.add(panelDePestanas);
 		  
-		 
 		  panel1 = new JPanel();
 		  panelDePestanas.addTab("Productos", null, panel1, null);
 		
@@ -172,12 +180,12 @@ public class View extends JFrame {
 	        panel1.add(cmbProveedores);
 	        
 	        scroll      = new JScrollPane();
-	        cabecera    = new String[] {"ID","NOMBRE","EXISTENCIA", "PRECIO", "Fecha"};
+	        cabecera    = new String[] {"ID","NOMBRE","EXISTENCIA", "PRECIO", "FECHA", "PROVEEDOR", "USUARIO"};
 	        dtm         = new DefaultTableModel(datos,cabecera);
 	        tabla       = new JTable(dtm);
 	        scroll.setViewportView(tabla);
-	        //y ahora se coloca el scrollpane...
-	        panel1.add(scroll); //añadir al panel1
+	       
+	        panel1.add(scroll); 
 	        sp1.putConstraint(SpringLayout.NORTH, scroll, 120,
 	                        SpringLayout.NORTH, panel1);
 	        sp1.putConstraint(SpringLayout.WEST, scroll,   10,
@@ -208,14 +216,22 @@ public class View extends JFrame {
 	        sp1.putConstraint(SpringLayout.WEST, btnUpd,  310,
 	                        SpringLayout.WEST, panel1);
 	        
-	        JLabel lblNewLabel = new JLabel("New label");
+	        JLabel lblNewLabel = new JLabel("Proveedor");
 	        sp1.putConstraint(SpringLayout.NORTH, lblNewLabel, 0, SpringLayout.NORTH, lblExistencia);
 	        sp1.putConstraint(SpringLayout.EAST, lblNewLabel, -18, SpringLayout.WEST, cmbProveedores);
 	        panel1.add(lblNewLabel);
+	        
+	        lblError = new JLabel("");
+	        lblError.setForeground(Color.RED);
+	        sp1.putConstraint(SpringLayout.NORTH, lblError, 0, SpringLayout.NORTH, lblPrecio);
+	        sp1.putConstraint(SpringLayout.WEST, lblError, 0, SpringLayout.WEST, lblNewLabel);
+	        panel1.add(lblError);
+	        
+	     
 		  
 		 ///Panel 2
 		  panel2 = new JPanel();
-		  panelDePestanas.addTab("Panel 2", null, panel2, null);
+//		  panelDePestanas.addTab("Proveedores", null, panel2, null);
 		  SpringLayout sp2 = new SpringLayout();
 		  panel2.setLayout(sp2);
 		  
@@ -245,7 +261,7 @@ public class View extends JFrame {
 	                        SpringLayout.WEST, panel2);
 	     
 	        txtDireccion = new JTextField();
-	        panel2.add(txtDireccion);    //añadir al panel1
+	        panel2.add(txtDireccion);   
 	        sp2.putConstraint(SpringLayout.NORTH, txtDireccion, 50,
 	                        SpringLayout.NORTH, panel2);
 	        sp2.putConstraint(SpringLayout.WEST, txtDireccion, 100,
@@ -260,8 +276,8 @@ public class View extends JFrame {
 	        dtmProveedor         = new DefaultTableModel(datosProveedor,cabeceraProveedor);
 	        tablaProveedor      = new JTable(dtmProveedor);
 	        scrollProveedor.setViewportView(tablaProveedor);
-	        //y ahora se coloca el scrollpane...
-	        panel2.add(scrollProveedor); //añadir al panel1
+	       
+	        panel2.add(scrollProveedor); 
 	        sp2.putConstraint(SpringLayout.NORTH, scrollProveedor, 120,
 	                        SpringLayout.NORTH, panel2);
 	        sp2.putConstraint(SpringLayout.WEST, scrollProveedor,   10,
@@ -291,6 +307,114 @@ public class View extends JFrame {
 	                        SpringLayout.SOUTH, panel2);
 	        sp2.putConstraint(SpringLayout.WEST, btnUpdProveedor,  310,
 	                        SpringLayout.WEST, panel2);
+	        
+	        
+	      ///Panel 3
+			  panel3 = new JPanel();
+//			  panelDePestanas.addTab("Usuarios", null, panel3, null);
+			  SpringLayout sp3 = new SpringLayout();
+			  panel3.setLayout(sp3);
+			  
+			  lblNombreUsuario = new JLabel("Nombre:");
+			  panel3.add(lblNombreUsuario);
+			    sp3.putConstraint(SpringLayout.WEST, lblNombreUsuario, 10, SpringLayout.WEST, panel3);
+		      
+		        sp3.putConstraint(SpringLayout.NORTH, lblNombreUsuario, 10,
+		                        SpringLayout.NORTH, panel3);
+		       
+		        lblContrasena = new JLabel("Contraseña:");
+		        panel3.add(lblContrasena);
+		        sp3.putConstraint(SpringLayout.NORTH, lblContrasena, 50,
+		                        SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, lblContrasena,  10,
+		                        SpringLayout.WEST, panel3);
+		        
+		        lblPermisos = new JLabel("Permisos:");
+		        panel3.add(lblPermisos);
+		        sp3.putConstraint(SpringLayout.NORTH, lblPermisos, 90,
+		                        SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, lblPermisos,  10,
+		                        SpringLayout.WEST, panel3);
+		      
+		        txtNombreUsuario = new JTextField();
+		        sp3.putConstraint(SpringLayout.NORTH, panel3, 2,
+		                        SpringLayout.NORTH, txtNombreUsuario);
+		        panel3.add(txtNombreUsuario);
+		        sp3.putConstraint(SpringLayout.NORTH, txtNombreUsuario, 10,
+		                        SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, txtNombreUsuario, 100,
+		                        SpringLayout.WEST, panel3);
+		        sp3.putConstraint(SpringLayout.EAST, txtNombreUsuario, 300,
+		                        SpringLayout.WEST, panel3);
+		     
+		        txtContrasena = new JTextField();
+		        panel3.add(txtContrasena);    //añadir al panel1
+		        sp3.putConstraint(SpringLayout.NORTH, txtContrasena, 50,
+		                        SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, txtContrasena, 100,
+		                        SpringLayout.WEST, panel3);
+		        sp3.putConstraint(SpringLayout.EAST, txtContrasena, 300,
+		                        SpringLayout.WEST, panel3);
+		        
+		        cmbPermisos = new JComboBox<>();
+		        cmbPermisos.addItem("Selecione permisos");
+		        cmbPermisos.addItem("Administrador");
+		        cmbPermisos.addItem("Capturista");
+		        
+		        panel3.add(cmbPermisos);
+		        sp3.putConstraint(SpringLayout.NORTH, cmbPermisos, 90, SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, cmbPermisos, 100, SpringLayout.WEST, panel3);
+		        sp3.putConstraint(SpringLayout.EAST, cmbPermisos, 300, SpringLayout.WEST, panel3);
+		       
+		       
+		      
+		        scrollUsuario     = new JScrollPane();
+		        cabeceraUsuario    = new String[] {"ID","NOMBRE","APELLIDO", "USUARIO",  "FECHA MODIFICACION", "PERMISOS" };
+		        dtmUsuario        = new DefaultTableModel(datosUsuario,cabeceraUsuario);
+		        tablaUsuario   = new JTable(dtmUsuario);
+		        scrollUsuario.setViewportView(tablaUsuario);
+		        //y ahora se coloca el scrollpane...
+		        panel3.add(scrollUsuario); //añadir al panel1
+		        sp3.putConstraint(SpringLayout.NORTH, scrollUsuario, 120,
+		                        SpringLayout.NORTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, scrollUsuario,   10,
+		                        SpringLayout.WEST, panel3);
+		        sp3.putConstraint(SpringLayout.EAST, scrollUsuario,  -10,
+		                        SpringLayout.EAST, panel3);
+		        sp3.putConstraint(SpringLayout.SOUTH, scrollUsuario, -50,
+		                        SpringLayout.SOUTH, panel3);
+		      
+		        btnAddUsuario          = new JButton("Añadir");
+		        panel3.add(btnAddUsuario);
+		        sp3.putConstraint(SpringLayout.SOUTH, btnAddUsuario, -10,
+		                        SpringLayout.SOUTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, btnAddUsuario,   60,
+		                        SpringLayout.WEST, panel3);
+		       
+		        btnDelUsuario = new JButton("Borrar");
+		        panel3.add(btnDelUsuario);
+		        sp3.putConstraint(SpringLayout.SOUTH, btnDelUsuario, -10,
+		                        SpringLayout.SOUTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, btnDelUsuario,  190,
+		                        SpringLayout.WEST, panel3);
+		       
+		        btnUpdUsuario = new JButton("Editar");
+		        panel3.add(btnUpdUsuario);
+		        sp3.putConstraint(SpringLayout.SOUTH, btnUpdUsuario, -10,
+		                        SpringLayout.SOUTH, panel3);
+		        sp3.putConstraint(SpringLayout.WEST, btnUpdUsuario,  310,
+		                        SpringLayout.WEST, panel3);
+		        
+		        lblApellido = new JLabel("Apellido:");
+		        sp3.putConstraint(SpringLayout.WEST, lblApellido, 139, SpringLayout.EAST, txtNombreUsuario);
+		        sp3.putConstraint(SpringLayout.SOUTH, lblApellido, 0, SpringLayout.SOUTH, lblNombreUsuario);
+		        panel3.add(lblApellido);
+		        
+		        txtApellido = new JTextField();
+		        sp3.putConstraint(SpringLayout.NORTH, txtApellido, 0, SpringLayout.NORTH, txtNombreUsuario);
+		        sp3.putConstraint(SpringLayout.WEST, txtApellido, 12, SpringLayout.EAST, lblApellido);
+		        sp3.putConstraint(SpringLayout.EAST, txtApellido, 222, SpringLayout.EAST, lblApellido);
+		        panel3.add(txtApellido);
 		  
 		
 		
@@ -316,6 +440,15 @@ public class View extends JFrame {
  
         btnUpdProveedor.addActionListener(c);
         btnUpdProveedor.setActionCommand("MODIFICAR PROVEEDOR");
+        
+        btnAddUsuario.addActionListener(c);
+        btnAddUsuario.setActionCommand("INSERTAR USUARIOS");
+ 
+        btnDelUsuario.addActionListener(c);
+        btnDelUsuario.setActionCommand("BORRAR USUARIOS");
+ 
+        btnUpdUsuario.addActionListener(c);
+        btnUpdUsuario.setActionCommand("MODIFICAR USUARIOS");
  
         tabla.addMouseListener(c);
         
@@ -324,5 +457,9 @@ public class View extends JFrame {
         tablaProveedor.addMouseListener(c);
         
         tablaProveedor.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        tablaUsuario.addMouseListener(c);
+        
+        tablaUsuario.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 }
