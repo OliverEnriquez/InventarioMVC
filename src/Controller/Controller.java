@@ -320,7 +320,7 @@ public class Controller implements ActionListener, MouseListener{
 	case "SALIR" :
 		Login login = new Login();
 		Login.main(null);
-		login.setVisible(true);
+	
 		this.view.dispose();
 		
 			

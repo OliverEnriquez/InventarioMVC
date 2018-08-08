@@ -489,7 +489,6 @@ public class View extends JFrame {
 	
 	public void conectaControlador(Controller c){
 		
-		Login.main(null);
         btnAdd.addActionListener(c);
         btnAdd.setActionCommand("INSERTAR");
  

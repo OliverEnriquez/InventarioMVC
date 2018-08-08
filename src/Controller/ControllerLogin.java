@@ -53,7 +53,9 @@ public class ControllerLogin implements ActionListener, MouseListener{
 						
 						View frame = new View();
 					 	new Bd("Inventario");
-						
+					 	this.login.dispose();
+					 	this.login.hide();
+					 	this.login.setVisible(false);
 						Controller controlador = new Controller(frame,rs.getInt("id"), rs.getString("Nombre"), rs.getString("Apellido"), rs.getString("Password"), rs.getString("Usuario"), rs.getInt("Permisos"), rs.getDate("Fecha"));
 						
 						frame.conectaControlador(controlador);
@@ -64,8 +66,9 @@ public class ControllerLogin implements ActionListener, MouseListener{
 						controlador.cargarTablaUsuarios();
 						controlador.cargarTablaReporte();
 						
-						login.dispose();
+						
 					    frame.setVisible(true);
+					   
 					   
 						
 					} else {
