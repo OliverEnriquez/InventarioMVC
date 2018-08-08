@@ -23,6 +23,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuBar;
 import java.awt.Color;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Component;
 
 public class View extends JFrame {
 
@@ -32,6 +34,8 @@ public class View extends JFrame {
     private JLabel lblExistencia;
     private JLabel lblPrecio;
     public JLabel lblError;
+    public JLabel lblErrorProveedor;
+    public JLabel lblErrorUsuario;
  
     
     public JTextField txtNombre;
@@ -67,6 +71,8 @@ public class View extends JFrame {
     public JButton btnAddUsuario;
     public JButton btnDelUsuario;
     public JButton btnUpdUsuario;
+    
+    public JButton btnSalir;
  
    
     public JScrollPane scroll; 
@@ -85,15 +91,25 @@ public class View extends JFrame {
     public Object[][] datosUsuario; 
     public String[] cabeceraUsuario;
     public DefaultTableModel dtmUsuario;
-    public JTable tablaUsuario; 
+    public JTable tablaUsuario;
+    
+    public JScrollPane scrollReporte; 
+    public Object[][] datosReporte; 
+    public String[] cabeceraReporte;
+    public DefaultTableModel dtmReporte;
+    public JTable tablaReporte; 
     
     public JPanel panel1 = new JPanel();
     public JPanel panel2 = new JPanel();
     public JPanel panel3 = new JPanel();
+    public JPanel panel4 = new JPanel(); 
+    
     private JLabel lblApellido;
     public JTextField txtApellido;
     boolean isVisble = false;
     public JTabbedPane panelDePestanas;
+    
+    public JLabel lblUser;
 	/**
 	 * Launch the application.
 	 */
@@ -106,7 +122,7 @@ public class View extends JFrame {
 		 
 		  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 
-		  setBounds(100, 100, 1045, 595);
+		  setBounds(100, 100, 1204, 619);
 		  
 		 
 		  contentPane = new JPanel();
@@ -118,7 +134,7 @@ public class View extends JFrame {
 		
 		  panelDePestanas = new JTabbedPane(JTabbedPane.TOP);
 		  
-		  panelDePestanas.setBounds(10, 11, 1035, 546);
+		  panelDePestanas.setBounds(10, 39, 1182, 568);
 		  contentPane.add(panelDePestanas);
 		  
 		  panel1 = new JPanel();
@@ -227,6 +243,14 @@ public class View extends JFrame {
 	        sp1.putConstraint(SpringLayout.WEST, lblError, 0, SpringLayout.WEST, lblNewLabel);
 	        panel1.add(lblError);
 	        
+	        btnSalir = new JButton("Salir");
+	        btnSalir.setBounds(1036, 12, 117, 25);
+	        contentPane.add(btnSalir);
+	        
+	        lblUser = new JLabel("User");
+	        lblUser.setBounds(50, 17, 354, 15);
+	        contentPane.add(lblUser);
+	        
 	     
 		  
 		 ///Panel 2
@@ -237,6 +261,7 @@ public class View extends JFrame {
 		  
 		  lblNombreProveedor = new JLabel("Nombre:");
 		  panel2.add(lblNombreProveedor);
+		  
 		    sp2.putConstraint(SpringLayout.WEST, lblNombreProveedor, 10, SpringLayout.WEST, panel2);
 	      
 	        sp2.putConstraint(SpringLayout.NORTH, lblNombreProveedor, 10,
@@ -307,6 +332,12 @@ public class View extends JFrame {
 	                        SpringLayout.SOUTH, panel2);
 	        sp2.putConstraint(SpringLayout.WEST, btnUpdProveedor,  310,
 	                        SpringLayout.WEST, panel2);
+	        
+	        lblErrorProveedor = new JLabel("");
+	        sp2.putConstraint(SpringLayout.NORTH, lblErrorProveedor, 2, SpringLayout.NORTH, txtDireccion);
+	        sp2.putConstraint(SpringLayout.WEST, lblErrorProveedor, 12, SpringLayout.EAST, txtDireccion);
+	        lblErrorProveedor.setForeground(Color.RED);
+	        panel2.add(lblErrorProveedor);
 	        
 	        
 	      ///Panel 3
@@ -415,14 +446,50 @@ public class View extends JFrame {
 		        sp3.putConstraint(SpringLayout.WEST, txtApellido, 12, SpringLayout.EAST, lblApellido);
 		        sp3.putConstraint(SpringLayout.EAST, txtApellido, 222, SpringLayout.EAST, lblApellido);
 		        panel3.add(txtApellido);
-		  
+		        
+		        lblErrorUsuario = new JLabel("");
+		        lblErrorUsuario.setForeground(Color.RED);
+		       
+		        sp3.putConstraint(SpringLayout.NORTH, lblErrorUsuario, 2, SpringLayout.NORTH, cmbPermisos);
+		        sp3.putConstraint(SpringLayout.WEST, lblErrorUsuario, 12, SpringLayout.EAST, cmbPermisos);
+		        panel3.add(lblErrorUsuario);
+		        
+		        panel4 = new JPanel();
+		        SpringLayout sp4 = new SpringLayout();
+		        panel4.setLayout(sp4);
+//		        panelDePestanas.addTab("Reporte", null, panel4, null);
+		       
+		        scrollReporte     = new JScrollPane();
+		        sp4.putConstraint(SpringLayout.NORTH, scrollReporte, 10, SpringLayout.NORTH, panel4);
+		        sp4.putConstraint(SpringLayout.WEST, scrollReporte, 0, SpringLayout.WEST, panel4);
+		        sp4.putConstraint(SpringLayout.SOUTH, scrollReporte, -10, SpringLayout.SOUTH, panel4);
+		        sp4.putConstraint(SpringLayout.EAST, scrollReporte, -10, SpringLayout.EAST, panel4);
+		        cabeceraReporte    = new String[] {"ID","FECHA","CONCEPTO \n ENTRADA/SALIDA", "ENTRADAS",  "SALIDAS", "EXISTENCIAS", "PRECIO POR UNIDAD", "ENTRADAS PRECIO", "SALIDAS PRECIO", "EXISTENCIA PRECIO" };
+		        dtmReporte        = new DefaultTableModel(datosReporte,cabeceraReporte);
+		        tablaReporte   = new JTable(dtmReporte);
+		        tablaReporte.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		        tablaReporte.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		        scrollReporte.setViewportView(tablaReporte);
+		        sp4.putConstraint(SpringLayout.NORTH, scrollProveedor, 120,
+                        SpringLayout.NORTH, panel4);
+		        sp4.putConstraint(SpringLayout.WEST, scrollProveedor,   120,
+                        SpringLayout.WEST, panel4);
+		        sp4.putConstraint(SpringLayout.EAST, scrollProveedor,  -120,
+                        SpringLayout.EAST, panel4);
+		        sp4.putConstraint(SpringLayout.SOUTH, scrollProveedor, -120,
+                        SpringLayout.SOUTH, panel4);
+		        
+		        panel4.add(scrollReporte);
+		        
+		         
 		
 		
 		 
 	}
 	
 	public void conectaControlador(Controller c){
-		 
+		
+		Login.main(null);
         btnAdd.addActionListener(c);
         btnAdd.setActionCommand("INSERTAR");
  
@@ -449,6 +516,9 @@ public class View extends JFrame {
  
         btnUpdUsuario.addActionListener(c);
         btnUpdUsuario.setActionCommand("MODIFICAR USUARIOS");
+        
+        btnSalir.addActionListener(c);
+        btnSalir.setActionCommand("SALIR");
  
         tabla.addMouseListener(c);
         
@@ -461,5 +531,9 @@ public class View extends JFrame {
         tablaUsuario.addMouseListener(c);
         
         tablaUsuario.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        tablaReporte.addMouseListener(c);
+        
+        tablaReporte.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 }

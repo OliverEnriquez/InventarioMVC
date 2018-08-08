@@ -33,7 +33,6 @@ public class ControllerLogin implements ActionListener, MouseListener{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		PreparedStatement ps;
@@ -56,15 +55,18 @@ public class ControllerLogin implements ActionListener, MouseListener{
 					 	new Bd("Inventario");
 						
 						Controller controlador = new Controller(frame,rs.getInt("id"), rs.getString("Nombre"), rs.getString("Apellido"), rs.getString("Password"), rs.getString("Usuario"), rs.getInt("Permisos"), rs.getDate("Fecha"));
-						controlador.isAdministrador();
+						
 						frame.conectaControlador(controlador);
+						controlador.isAdministrador();
 						controlador.llenarComboBox();
 						controlador.cargarTabla();
 						controlador.cargarTablaProveedor();
 						controlador.cargarTablaUsuarios();
+						controlador.cargarTablaReporte();
 						
+						login.dispose();
 					    frame.setVisible(true);
-					login.setVisible(false);
+					   
 						
 					} else {
 						System.out.println("Password Incorrecto");

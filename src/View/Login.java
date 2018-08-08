@@ -31,21 +31,18 @@ public class Login extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					  
-					Login frame = new Login();
-					new Bd("Inventario");
-					ControllerLogin login = new ControllerLogin(frame);
-					frame.conectaControlador(login);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println(e.getMessage());
-				}
-			}
-		});
+		
+		try {
+			  System.out.println("Inicia");
+			Login frame = new Login();
+			new Bd("Inventario");
+			ControllerLogin login = new ControllerLogin(frame);
+			frame.conectaControlador(login);
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
